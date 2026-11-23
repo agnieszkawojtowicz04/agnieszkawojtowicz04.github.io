@@ -647,7 +647,8 @@ $(document).ready(function () {
         function roleGallery(r) {
             var list = (r.gal || '').split(',').map(function (x) { return x.trim(); }).filter(Boolean);
             if (!list.length) {
-                list = [];
+                list = ['img/portfolio/placeholder.png', 'img/portfolio/placeholder.png',
+                        'img/portfolio/placeholder.png'];
             }
             return list;
         }
