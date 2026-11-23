@@ -289,6 +289,7 @@ function updateGame(index) {
             videoElement.className = 'gamejam-main-video';
             videoElement.autoplay = true;
             videoElement.muted = true;
+            videoElement.controls = true;
             videoElement.loop = true;
             videoElement.playsInline = true;
             mainMediaContainer.appendChild(videoElement);
