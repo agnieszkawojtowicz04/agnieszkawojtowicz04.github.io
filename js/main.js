@@ -526,3 +526,66 @@ $(document).ready(function () {
         });
     });
 });
+//do wybierania w projekcie ścieżki
+$(document).ready(function () {
+    function renderRoleSelector(modalEl, triggerEl) {
+        var $modalBody = $(modalEl).find('.modal-body');
+        if ($modalBody.find('.role-breakdown-box').length) {
+            return;
+        }
+
+        var title = (triggerEl && triggerEl.dataset.title) || modalEl.dataset.title || 'Projekt';
+        var descriptions = {
+            sound: (triggerEl && triggerEl.dataset.descSound) || '',
+            composer: (triggerEl && triggerEl.dataset.descComposer) || '',
+            pm: (triggerEl && triggerEl.dataset.descPm) || ''
+        };
+
+        var roles = [
+            { key: 'sound', label: 'Sound Design', text: descriptions.sound },
+            { key: 'composer', label: 'Composer', text: descriptions.composer },
+            { key: 'pm', label: 'Project Manager', text: descriptions.pm }
+        ].filter(function (r) {
+            return r.text && r.text.trim() !== '';
+        });
+
+        if (roles.length === 0) {
+            return;
+        }
+
+        var buttonsHtml = roles.map(function (role, idx) {
+            var activeClass = idx === 0 ? ' active' : '';
+            return '<button type="button" class="btn btn-sm btn-outline-light role-tab-btn' + activeClass + '" data-role="' + role.key + '">' + role.label + '</button>';
+        }).join(' ');
+
+        var boxHtml =
+            '<div class="role-breakdown-box" style="margin-top: 20px; padding: 16px; border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; background: rgba(0,0,0,0.25);">' +
+                '<h4 style="margin-bottom: 10px;">Zakres prac w projekcie: ' + title + '</h4>' +
+                '<div class="role-buttons" style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px;">' + buttonsHtml + '</div>' +
+                '<div class="role-description-output" style="font-size: 15px; line-height: 1.6;">' + roles[0].text + '</div>' +
+            '</div>';
+
+        $modalBody.append(boxHtml);
+
+        $modalBody.off('click', '.role-tab-btn').on('click', '.role-tab-btn', function () {
+            var selectedKey = $(this).data('role');
+            $modalBody.find('.role-tab-btn').removeClass('active');
+            $(this).addClass('active');
+            $modalBody.find('.role-description-output').text(descriptions[selectedKey] || '');
+        });
+    }
+
+    var lastClickedPortfolioLink = null;
+
+    $(document).on('click', '.portfolio-element', function () {
+        lastClickedPortfolioLink = this;
+        var h3 = this.querySelector('.details h3');
+        if (h3) {
+            this.dataset.title = h3.textContent.trim();
+        }
+    });
+
+    $('#portfolioModal').on('shown.bs.modal', function () {
+        renderRoleSelector(this, lastClickedPortfolioLink);
+    });
+});
