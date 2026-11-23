@@ -224,19 +224,19 @@ jQuery(document).ready(function($) {
 
 const games = [
     {
-        title: 'FingerFlipSunset',
-        mainImage: 'img/games/FingerFlipSunset/thumbnail.png',
-        video: 'img/games/FingerFlipSunset/video.mp4',
-        sideImages: ['img/games/FingerFlipSunset/thumbnail.png', 'img/games/res/gmtk24.png'],
-        year: 2024,
+        title: 'PodPoziomemMorza',
+        mainImage: 'img/games/podpoziomemmorza/thumbnail.png',
+        video: 'img/games/PodPoziomemMorza/video.mov',
+        sideImages: ['img/games/QLaRat/thumbnail.png', 'img/games/res/gmtk24.png'],
+        year: 2025,
         award: '',
-        description: "An arcade platformer inspired by everyone's back seat childhood roadtrip window imagination. \n Created in four days, this game embodies the 'Build to Scale' theme by playing with depth and perspective. ",
-        downloadLink: 'https://franciscomurias.itch.io/fingerflip-sunset'
+        description: "Skomponowałam muzykę do gry o tematyce podwodnej, stworzonej podczas Game Jamu. Celem było stworzenie nastrojowej ścieżki dźwiękowej, która buduje poczucie głębi i napięcia, aby odzwierciedlać zarówno ekspolarcje, jak i niebezpieczeństwo. Wszystkie dźwięki zostały zaprojektowane tak, aby łączyć otoczenie, dynamikę bąbelków i stylizowane dźwięki interakcji, aby wzbogacić wrażenia słuchowe gracza i zwiększyć poczucie immersji. ",
+        downloadLink: 'https://zinnex.itch.io/pod-poziomem-morza'
     },
     {
-        title: 'TeatherNFeather',
-        mainImage: 'img/games/TeatherNFeather/thumbnail.png',
-        video: '',
+        title: 'QLaRat',
+        mainImage: 'img/games/QLaRat/thumbnail.png',
+        video: 'img/games/QLaRat/video.mov',
         gallery: [
             'img/games/TeatherNFeather/gallery/1.jpg',
             'img/games/TeatherNFeather/gallery/2.jpg',
@@ -246,16 +246,16 @@ const games = [
             'img/games/TeatherNFeather/gallery/6.jpg',
             'img/games/TeatherNFeather/gallery/7.png',
         ],
-        sideImages: ['img/games/TeatherNFeather/thumbnail.png', 'img/games/res/gmtk21.png'],
-        year: 2021,
-        award: 'Game Jam Winner',
-        description: 'Developed in 48 hours from the theme "Tied together" and Winner of the 2021 GMTK Game Jam with around 6 thousand games submitted. \n Tether n\' Feather is a 3D puzzle platformer game where you must guide two adorable parrots through relaxing and colorful islands.',
-        downloadLink: 'https://franciscomurias.itch.io/tetherfeather'
+        sideImages: ['img/games/NoShit/thumbnail.png', 'img/games/res/gmtk21.png'],
+        year: 2026,
+        award: '',
+        description: 'Celem było stworzenie rytmicznej gry zaprojektowanej na kontroler w formie maty do tańca. Gracz wciela się w szczura, który porusza się w rytm muzyki. Stworzyłam rytmiczną ścieżkę dźwiękową, która bezpośrednio wspiera mechanikę rozgrywki, zapewniając wyraźne tempo i responsywność na polecenia gracza. Muzyka została zaprojektowana tak, aby była zarówno angażująca, jak i funkcjonalna.',
+        downloadLink: 'https://krecikowicz.itch.io/qlarat'
     },
     {
-        title: 'FlowState',
-        mainImage: 'img/games/FlowState/thumbnail.png',
-        video: '',
+        title: 'NoShit',
+        mainImage: 'img/games/NoShit/thumbnail.png',
+        video: 'img/games/NoShit/video.mov',
         gallery: [
             'img/games/FlowState/gallery/1.gif',
             'img/games/FlowState/gallery/2.gif',
@@ -267,108 +267,12 @@ const games = [
             'img/games/FlowState/gallery/3.jpg',
             'img/games/FlowState/gallery/4.jpg',
         ],
-        sideImages: ['img/games/FlowState/thumbnail.png', 'img/games/res/ggj.png'],
-        year: 2021,
+        sideImages: ['img/games/podpoziomemmorza/thumbnail.png', 'img/games/res/ggj.png'],
+        year: 2026,
         award: '',
-        description: "Don't lose your flow. Parkour runner game in an about using your power to chose which parts of the level appear and disappear and keep your momentum. \n Made in two days from the theme 'Lost and Found'.",
-        downloadLink: 'https://franciscomurias.itch.io/flow-state'
+        description: "Szybka, humorystyczna gra zręcznościowa stworzona w zaledwie 24 godziny w ramach game jamu. Gra opowiada o bezcelowej walce z żywiołem - nagłą awarią hydrauliczną we własnym mieszkaniu. Byłam odpowiedzialna za całościową warstwę audio: muzykę, efekty dźwiękowe, oraz montaż i udźwiękowienie scenek fabularnych.",
+        downloadLink: 'https://3pieczarkis.itch.io/no-shit'
     },
-    {
-        title: 'BendingSpacetime',
-        mainImage: 'img/games/BendingSpacetime/thumbnail.png',
-        video: 'img/games/BendingSpacetime/video1.mp4',
-        sideImages: ['img/games/BendingSpacetime/thumbnail.png', 'img/games/res/mnj20.png'],
-        year: 2020,
-        award: '',
-        description: "In the space anomaly, be the last ship standing when space collapses on itself. \n 3D survival shooter in space. \n Developed in 32 hours for the Mix and Jam Game Jam 2020 in Unity.",
-        downloadLink: 'https://infinitydragoon.itch.io/bending-spacetime'
-    },
-    {
-        title: 'OverNOut',
-        mainImage: 'img/games/OverNOut/thumbnail.png',
-        video: '',
-        gallery: [
-            'img/games/OverNOut/gallery/1.png',
-            'img/games/OverNOut/gallery/2.jpg',
-            'img/games/OverNOut/gallery/3.png',
-        ],
-        sideImages: ['img/games/OverNOut/thumbnail.png', 'img/games/res/gmtk20.png'],
-        year: 2020,
-        award: '',
-        description: '*roger, do you copy?* A Museum Heist gone out of control! Guide a cat through a museum exhibit and steal the precious artifact. \n Developed in 72 hours for the GMTK Game Jam 2020.',
-        downloadLink: 'https://franciscomurias.itch.io/over-n-out'
-    },
-    {
-        title: 'Shadowcasters',
-        mainImage: 'img/games/Shadowcasters/thumbnail.png',
-        video: '',
-        gallery: [
-            'img/games/Shadowcasters/gallery/2.png',
-            'img/games/Shadowcasters/gallery/3.png',
-        ],
-        sideImages: ['img/games/Shadowcasters/thumbnail.png', 'img/games/res/tugcsgj.png'],
-        year: 2019  ,
-        award: '1st Place Winner',
-        description: 'In the spirit of Halloween, witches use their spells to cast out the shadows and battle it out in this bomberman inspired game! \n Inspired by Jakub Wasilewski shadow shader implementation in PICO- 8.\nWinner of Teesside Game Jam 2019, made in 2 days with much love!',
-        downloadLink: 'https://franciscomurias.itch.io/shadowcasters'
-    },
-    {
-        title: 'Domain',
-        mainImage: 'img/games/Domain/thumbnail.png',
-        video: '',
-        gallery: [
-            'img/games/Domain/gallery/4.png',
-            'img/games/Domain/gallery/3.png',
-            'img/games/Domain/gallery/5.png',
-            'img/games/Domain/gallery/6.png',
-            'img/games/Domain/gallery/7.png',
-        ],
-        sideImages: ['img/games/Domain/thumbnail.png', 'img/games/res/retrojam.png'],
-        year: 2017,
-        award: '1st Place Winner',
-        description: 'Two players battle for control of the domain. "3D"ish implementation in PICO-8. \n Winner of the Retro Jam 2017, made in 32 hours with much love.',
-        downloadLink: 'https://franciscomurias.itch.io/domain-conflict'
-    },
-    {
-        title: 'DungeonBombers',
-        mainImage: 'img/games/DungeonBombers/thumbnail.png',
-        video: '',
-        gallery: [
-            'img/games/DungeonBombers/gallery/2.png',
-            'img/games/DungeonBombers/gallery/3.png',
-            'img/games/DungeonBombers/gallery/4.gif',
-        ],
-        sideImages: ['img/games/DungeonBombers/thumbnail.png', ''],
-        year: 2018,
-        award: '',
-        description: ' Small personal project consisting of a bomberman like game made with Love2D (lua). \n Meant to practice the skills required to produce all the art, code and music for a simple yet juicy and polished game.',
-        downloadLink: 'https://github.com/FranciscoMurias/DungeonBomber'
-    },
-    {
-        title: 'Reset',
-        mainImage: 'img/games/Reset/thumbnail2.png',
-        video: '',
-        gallery: [
-            'img/games/Reset/thumbnail2.png',
-        ],
-        sideImages: ['img/games/Reset/thumbnail.png', 'img/games/res/pggj2015.png'],
-        year: 2015,
-        award: '2nd Place Winner',
-        description: 'Game developed for the Porto graphics Game Jam 2015 developed in Unity in 32 hours. \n This was my first developed videogame, at my first game jam.',
-        downloadLink: './assets/RESET.zip'
-    },
-    {
-        title: 'Displaced',
-        mainImage: 'img/games/Displaced/thumbnail.png',
-        gallery: [
-            'img/games/Displaced/thumbnail.png',
-        ],
-        sideImages: ['img/games/Displaced/thumbnail.png', 'img/games/res/pggj2016.png'],
-        year: 2016,
-        award: 'Honorable Mention',
-        description: 'Game developed for the Porto Graphics Game Jam 2016 developed in Unity in 32 hours. \nHonorable mention Winner for Creativity and Adaptation to theme.',
-        downloadLink: './assets/Displaced.rar'
-    }
 ];
 
 //specialty links
