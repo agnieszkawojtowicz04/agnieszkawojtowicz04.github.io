@@ -226,7 +226,7 @@ const games = [
     {
         title: 'PodPoziomemMorza',
         mainImage: 'img/games/podpoziomemmorza.png',
-        video: 'img/games/PodPoziomemMorza/video.mov',
+        video: 'img/games/podpoziomemmorza/video.mp4',
         sideImages: ['img/games/res/PogJam2025.png'],
         gallery: ['img/games/podpoziomemmorza.png'],
         year: 2025,
@@ -237,7 +237,7 @@ const games = [
     {
         title: 'QLaRat',
         mainImage: 'img/games/qlarat.png',
-        video: 'img/games/QLaRat/video.mov',
+        video: 'img/games/qlarat/video.mp4',
         gallery: ['img/games/qlarat.png'],
         sideImages: ['img/games/res/cyberiada.png'],
         year: 2026,
@@ -248,7 +248,7 @@ const games = [
     {
         title: 'NoShit',
         mainImage: 'img/games/noshit.png',
-        video: 'img/games/NoShit/video.mov',
+        video: 'img/games/noshit/video.mp4',
         gallery: ['img/games/noshit.png'],
         sideImages: ['img/games/res/PogJam2026.png'],
         year: 2026,
