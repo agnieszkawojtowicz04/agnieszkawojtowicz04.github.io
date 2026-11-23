@@ -34,6 +34,29 @@ jQuery(document).ready(function($) {
     // Initiate the wowjs animation library
     new WOW().init();
 
+    // Wlasny lightbox dla certyfikatow
+    $(document).on('click', '.cert-zoom', function (e) {
+        e.preventDefault();
+        var src = this.getAttribute('href');
+        var caption = this.getAttribute('title') || '';
+        var $ov = $('<div class="cert-lightbox"></div>').css({
+            position: 'fixed', inset: 0, zIndex: 2000,
+            background: 'rgba(6,12,34,.92)', display: 'flex',
+            flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+            padding: '40px', cursor: 'zoom-out'
+        });
+        $ov.append($('<img>').attr('src', src).css({
+            maxWidth: '92vw', maxHeight: '82vh', objectFit: 'contain', borderRadius: '4px'
+        }));
+        if (caption) {
+            $ov.append($('<p></p>').text(caption).css({
+                color: '#fff', marginTop: '16px', fontSize: '15px', textAlign: 'center'
+            }));
+        }
+        $ov.on('click', function () { $(this).remove(); });
+        $('body').append($ov);
+    });
+
     // Initialize Venobox
     $('.venobox').venobox({
         bgcolor: '',
@@ -194,6 +217,9 @@ jQuery(document).ready(function($) {
 
 
     $(".portfolio-element").on("click", function () {
+        window.lastClickedPortfolioLink = this;
+        var h3El = this.querySelector('.details h3');
+        if (h3El) this.dataset.title = h3El.textContent.trim();
         var modal = document.getElementById("portfolioModal");
         modal.dataset.portfolio = this.dataset.portfolio;
         modal.dataset.type = this.dataset.type;
@@ -201,24 +227,6 @@ jQuery(document).ready(function($) {
         modal.dataset.subfolder = this.dataset.subfolder || "";
     });
 
-    $('#portfolioModal').on('show.bs.modal', function () {
-        var modal = this;
-        $(this).find('.modal-body').empty().html('<p>Loading...</p>');
-        $(this).find('.modal-title').text('');
-
-        var pathToLoad = this.dataset.subfolder
-            ? `img/${this.dataset.type}/${this.dataset.subfolder}/${this.dataset.portfolio}/${this.dataset.portfolio}.html`
-            : `img/${this.dataset.type}/${this.dataset.portfolio}/${this.dataset.portfolio}.html`;
-
-        $(this).find('.modal-body').load(pathToLoad, function (response, status, xhr) {
-            if (status == "error") {
-                console.log("Error loading content:", xhr.status, xhr.statusText);
-                $(this).html('<p>Error loading content. Please try again.</p>');
-            } else {
-                $(modal).find('.modal-title').text(modal.dataset.title);
-            }
-        });
-    });
    
 });
 
@@ -492,84 +500,228 @@ $(document).ready(function () {
         }, 150);
     }
 
-    $('#portfolioModal').on('show.bs.modal', function () {
-        var modal = this;
-        $(this).find('.modal-body').empty().html('<p>Loading...</p>');
-        $(this).find('.modal-title').text('');
+    var VIDEO_EXT = /\.(mp4|webm|ogv|mov)(\?.*)?$/i;
 
-        $(this).find('.modal-body').load(`img/${this.dataset.type}/${this.dataset.portfolio}/${this.dataset.portfolio}.html`, function () {
-            $(this).find('.modal-title').text(modal.dataset.title);
-            customizeCarousel(modal);
-            scrollModalToTop(modal);
+    // Globalna preferencja dzwieku: raz odciszone = kolejne filmy tez z dzwiekiem
+    window.portfolioSoundOn = window.portfolioSoundOn || false;
+
+    function parseMedia(trigger) {
+        var media = [];
+        if (!trigger) return media;
+
+        var tileThumb = trigger.querySelector('img');
+        var fallbackPoster = tileThumb ? tileThumb.getAttribute('src') : '';
+
+        // data-gallery="plik.png, film.mp4|plakat.png, plik2.jpg"
+        var list = (trigger.dataset.gallery || '').split(',');
+        list.forEach(function (entry) {
+            entry = entry.trim();
+            if (!entry) return;
+            var parts = entry.split('|');
+            var src = parts[0].trim();
+            var poster = (parts[1] || '').trim();
+            if (VIDEO_EXT.test(src)) {
+                media.push({ type: 'video', src: src, poster: poster || fallbackPoster });
+            } else {
+                media.push({ type: 'image', src: src, poster: src });
+            }
         });
+
+        if (trigger.dataset.video) {
+            media.unshift({
+                type: 'video',
+                src: trigger.dataset.video,
+                poster: (trigger.dataset.videoPoster || '').trim() || fallbackPoster
+            });
+        }
+
+        if (!media.length && fallbackPoster) {
+            media.push({ type: 'image', src: fallbackPoster, poster: fallbackPoster });
+        }
+        return media;
+    }
+
+    function slideHtml(m, title) {
+        if (m.type === 'video') {
+            return '<div class="video-slide" style="position:relative;display:inline-block;max-width:100%;">' +
+                '<video class="portfolio-video w-100" src="' + m.src + '" poster="' + m.poster + '" ' +
+                'controls loop playsinline preload="metadata" ' +
+                'style="max-height:70vh;display:block;object-fit:contain;background:#000;"></video>' +
+                '<button type="button" class="unmute-btn" ' +
+                'style="position:absolute;left:14px;bottom:52px;z-index:5;border:0;border-radius:4px;' +
+                'padding:8px 14px;background:rgba(0,0,0,.72);color:#fff;font-size:14px;cursor:pointer;">' +
+                '<i class="fa fa-volume-up"></i> Włącz dźwięk</button>' +
+                '</div>';
+        }
+        return '<img src="' + m.src + '" alt="' + title + '" style="max-height:70vh;object-fit:contain;">';
+    }
+
+    function buildPortfolioModal(modal) {
+        var trigger = window.lastClickedPortfolioLink;
+        var $body = $(modal).find('.modal-body').empty();
+        var title = (trigger && trigger.dataset.title) || modal.dataset.title || '';
+        var media = parseMedia(trigger);
+        if (!media.length) return;
+
+        // 1. EKRAN - karuzela
+        var html = '<div class="row"><div class="carousel-wrapper w-100">' +
+            '<div id="carousel1" class="carousel slide h-100" data-ride="false" data-interval="false">' +
+            '<div class="carousel-inner h-100">';
+        media.forEach(function (m, i) {
+            html += '<div class="carousel-item h-100 text-center' + (i === 0 ? ' active' : '') + '">' +
+                slideHtml(m, title) + '</div>';
+        });
+        html += '</div>';
+        if (media.length > 1) {
+            html += '<a class="carousel-control-prev" href="#carousel1" role="button" data-slide="prev">' +
+                '<span class="carousel-control-prev-icon" aria-hidden="true"></span></a>' +
+                '<a class="carousel-control-next" href="#carousel1" role="button" data-slide="next">' +
+                '<span class="carousel-control-next-icon" aria-hidden="true"></span></a>';
+        }
+        html += '</div></div></div>';
+
+        // 2. MINIATURY u dolu
+        if (media.length > 1) {
+            html += '<div class="row"><ul class="carousel-indicators w-100">';
+            media.forEach(function (m, i) {
+                html += '<li class="list-inline-item' + (i === 0 ? ' active' : '') +
+                    '" data-target="#carousel1" data-slide-to="' + i + '">' +
+                    '<img src="' + m.poster + '" class="img-fluid">' +
+                    (m.type === 'video' ? '<i class="fa fa-play fa-2x"></i>' : '') + '</li>';
+            });
+            html += '</ul></div>';
+        }
+
+        // 3. SEKCJE OPISOWE
+        var secStyle = 'margin-top:24px;';
+        var labStyle = 'text-transform:uppercase;letter-spacing:1px;font-size:13px;opacity:.6;margin-bottom:8px;';
+
+        var d = (trigger && trigger.dataset) || {};
+        var time  = d.time  || '[PLACEHOLDER] np. 3 tygodnie / 40 h';
+        var tools = (d.tools || 'Reaper, FMOD, Unity').split(',');
+
+        // dane per sciezka: opis + wlasna galeria
+        var roles = [
+            { key: 'sound',    label: 'Sound Design',    text: d.descSound    || '', gal: d.gallerySound    || '' },
+            { key: 'composer', label: 'Composer',        text: d.descComposer || '', gal: d.galleryComposer || '' },
+            { key: 'pm',       label: 'Project Manager', text: d.descPm       || '', gal: d.galleryPm       || '' }
+        ].filter(function (r) { return r.text && r.text.trim() !== ''; });
+
+        html += '<div class="row"><div class="modal-details w-100"><div class="page-body project-info">';
+
+        if (title) html += '<h3 class="modal-title">' + title + '</h3>';
+
+        // 3a. ZAKRES PRAC - wybor sciezki
+        if (roles.length) {
+            html += '<div class="project-section" style="' + secStyle + '">' +
+                '<div style="' + labStyle + '">Zakres prac w projekcie</div>' +
+                '<div class="role-buttons" style="display:flex;flex-wrap:wrap;gap:8px;">';
+            roles.forEach(function (r, i) {
+                html += '<button type="button" class="btn btn-sm btn-outline-light role-tab-btn' +
+                    (i === 0 ? ' active' : '') + '" data-role="' + r.key + '">' + r.label + '</button>';
+            });
+            html += '</div></div>';
+        }
+
+        // 3b. CZAS
+        html += '<div class="project-section" style="' + secStyle + '">' +
+            '<div style="' + labStyle + '">Czas pracy nad projektem</div><p>' + time + '</p></div>';
+
+        // 3c. UZYTE PROGRAMY
+        html += '<div class="project-section" style="' + secStyle + '">' +
+            '<div style="' + labStyle + '">Użyte programy</div>' +
+            '<div style="display:flex;flex-wrap:wrap;gap:8px;">';
+        tools.forEach(function (t) {
+            t = t.trim();
+            if (t) html += '<span style="padding:6px 12px;border:1px solid rgba(255,255,255,.2);' +
+                'border-radius:20px;font-size:14px;">' + t + '</span>';
+        });
+        html += '</div></div>';
+
+        // 3d. O PROJEKCIE + 3e. ZDJECIA (zalezne od sciezki)
+        html += '<div class="role-desc-output"></div>';
+        html += '<div class="role-gallery-output"></div>';
+
+        html += '</div></div></div>';
+
+        function roleGallery(r) {
+            var list = (r.gal || '').split(',').map(function (x) { return x.trim(); }).filter(Boolean);
+            if (!list.length) {
+                list = ['img/portfolio/placeholder.png', 'img/portfolio/placeholder.png',
+                        'img/portfolio/placeholder.png'];
+            }
+            return list;
+        }
+
+        function renderRole(key) {
+            var r = roles.filter(function (x) { return x.key === key; })[0];
+            if (!r) return;
+
+            $body.find('.role-desc-output').html(
+                '<div class="project-section" style="' + secStyle + '">' +
+                '<div style="' + labStyle + '">O projekcie</div>' +
+                '<p style="line-height:1.7;">' + r.text + '</p></div>'
+            );
+
+            var gal = '<div class="project-section" style="' + secStyle + '">' +
+                '<div style="' + labStyle + '">Zdjęcia do projektu</div>' +
+                '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;">';
+            roleGallery(r).forEach(function (src) {
+                gal += '<img src="' + src + '" alt="' + title + '" ' +
+                    'style="width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:4px;">';
+            });
+            gal += '</div></div>';
+            $body.find('.role-gallery-output').html(gal);
+        }
+
+        $body.html(html);
+
+        if (roles.length) {
+            renderRole(roles[0].key);
+            $body.off('click', '.role-tab-btn').on('click', '.role-tab-btn', function () {
+                $body.find('.role-tab-btn').removeClass('active');
+                $(this).addClass('active');
+                renderRole($(this).data('role'));
+            });
+        }
+
+        // Przycisk odciszania
+        $body.off('click', '.unmute-btn').on('click', '.unmute-btn', function () {
+            var video = $(this).siblings('video')[0];
+            if (!video) return;
+            video.muted = false;
+            video.volume = 1;
+            window.portfolioSoundOn = true;
+            video.play();
+            $body.find('.unmute-btn').hide();
+        });
+
+        // Filmy startuja wyciszone (wymog przegladarek), chyba ze user juz odciszyl
+        $body.find('video').each(function () {
+            this.muted = !window.portfolioSoundOn;
+        });
+        if (window.portfolioSoundOn) {
+            $body.find('.unmute-btn').hide();
+        }
+
+        if (media.length > 1) {
+            customizeCarousel(modal);
+        }
+
+        // Pauzuj film przy zmianie slajdu
+        $body.find('.carousel').on('slide.bs.carousel', function () {
+            $body.find('video').each(function () { this.pause(); });
+        });
+    }
+
+    $('#portfolioModal').on('show.bs.modal', function () {
+        buildPortfolioModal(this);
+        scrollModalToTop(this);
     });
 
     $('#portfolioModal').on('hide.bs.modal', function () {
         $(this).find('video').each(function () {
             this.pause();
         });
-    });
-});
-//do wybierania w projekcie ścieżki
-$(document).ready(function () {
-    function renderRoleSelector(modalEl, triggerEl) {
-        var $modalBody = $(modalEl).find('.modal-body');
-        if ($modalBody.find('.role-breakdown-box').length) {
-            return;
-        }
-
-        var title = (triggerEl && triggerEl.dataset.title) || modalEl.dataset.title || 'Projekt';
-        var descriptions = {
-            sound: (triggerEl && triggerEl.dataset.descSound) || '',
-            composer: (triggerEl && triggerEl.dataset.descComposer) || '',
-            pm: (triggerEl && triggerEl.dataset.descPm) || ''
-        };
-
-        var roles = [
-            { key: 'sound', label: 'Sound Design', text: descriptions.sound },
-            { key: 'composer', label: 'Composer', text: descriptions.composer },
-            { key: 'pm', label: 'Project Manager', text: descriptions.pm }
-        ].filter(function (r) {
-            return r.text && r.text.trim() !== '';
-        });
-
-        if (roles.length === 0) {
-            return;
-        }
-
-        var buttonsHtml = roles.map(function (role, idx) {
-            var activeClass = idx === 0 ? ' active' : '';
-            return '<button type="button" class="btn btn-sm btn-outline-light role-tab-btn' + activeClass + '" data-role="' + role.key + '">' + role.label + '</button>';
-        }).join(' ');
-
-        var boxHtml =
-            '<div class="role-breakdown-box" style="margin-top: 20px; padding: 16px; border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; background: rgba(0,0,0,0.25);">' +
-                '<h4 style="margin-bottom: 10px;">Zakres prac w projekcie: ' + title + '</h4>' +
-                '<div class="role-buttons" style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px;">' + buttonsHtml + '</div>' +
-                '<div class="role-description-output" style="font-size: 15px; line-height: 1.6;">' + roles[0].text + '</div>' +
-            '</div>';
-
-        $modalBody.append(boxHtml);
-
-        $modalBody.off('click', '.role-tab-btn').on('click', '.role-tab-btn', function () {
-            var selectedKey = $(this).data('role');
-            $modalBody.find('.role-tab-btn').removeClass('active');
-            $(this).addClass('active');
-            $modalBody.find('.role-description-output').text(descriptions[selectedKey] || '');
-        });
-    }
-
-    var lastClickedPortfolioLink = null;
-
-    $(document).on('click', '.portfolio-element', function () {
-        lastClickedPortfolioLink = this;
-        var h3 = this.querySelector('.details h3');
-        if (h3) {
-            this.dataset.title = h3.textContent.trim();
-        }
-    });
-
-    $('#portfolioModal').on('shown.bs.modal', function () {
-        renderRoleSelector(this, lastClickedPortfolioLink);
     });
 });
