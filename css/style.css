@@ -2369,3 +2369,61 @@ body.mobile-nav-active #mobile-nav-toggle {
         margin-top: 10px;
     }
 }
+
+/*--------------------------------------------------------------
+# Portfolio Modal Role Breakdown
+--------------------------------------------------------------*/
+
+#portfolioModal .role-breakdown-box {
+    margin: 24px 15px 15px 15px;
+    padding: 20px;
+    border: 1px solid rgba(60, 211, 255, 0.22);
+    border-radius: 8px;
+    background: var(--BG3Color);
+}
+
+#portfolioModal .role-breakdown-box h4 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 14px;
+    color: var(--TextColor);
+}
+
+#portfolioModal .role-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+#portfolioModal .role-tab-btn {
+    border: 1px solid rgba(60, 211, 255, 0.45);
+    border-radius: 4px;
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--TextColor);
+    background-color: rgba(9, 67, 95, 0.35);
+    transition: all 0.2s ease;
+}
+
+#portfolioModal .role-tab-btn:hover {
+    background-color: var(--HighlightColor2);
+    border-color: var(--LinksColor);
+    color: var(--TextColor);
+}
+
+#portfolioModal .role-tab-btn.active {
+    background-color: var(--LinksColor);
+    border-color: var(--LinksColor);
+    color: var(--BG3Color);
+}
+
+#portfolioModal .role-description-output {
+    font-size: 15px;
+    line-height: 1.65;
+    color: #e6e8ef;
+    margin: 0;
+}
