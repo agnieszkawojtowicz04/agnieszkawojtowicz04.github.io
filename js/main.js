@@ -227,7 +227,7 @@ const games = [
         title: 'PodPoziomemMorza',
         mainImage: 'img/games/podpoziomemmorza/thumbnail.png',
         video: 'img/games/PodPoziomemMorza/video.mov',
-        sideImages: ['img/games/QLaRat/thumbnail.png', 'img/games/res/gmtk24.png'],
+        sideImages: ['img/games/podpoziomemmorza.png', 'img/games/res/cdv.png'],
         year: 2025,
         award: '',
         description: "Skomponowałam muzykę do gry o tematyce podwodnej, stworzonej podczas Game Jamu. Celem było stworzenie nastrojowej ścieżki dźwiękowej, która buduje poczucie głębi i napięcia, aby odzwierciedlać zarówno ekspolarcje, jak i niebezpieczeństwo. Wszystkie dźwięki zostały zaprojektowane tak, aby łączyć otoczenie, dynamikę bąbelków i stylizowane dźwięki interakcji, aby wzbogacić wrażenia słuchowe gracza i zwiększyć poczucie immersji. ",
@@ -235,7 +235,7 @@ const games = [
     },
     {
         title: 'QLaRat',
-        mainImage: 'img/games/QLaRat/thumbnail.png',
+        mainImage: 'img/games/qlarat.png',
         video: 'img/games/QLaRat/video.mov',
         gallery: [
             'img/games/TeatherNFeather/gallery/1.jpg',
@@ -246,7 +246,7 @@ const games = [
             'img/games/TeatherNFeather/gallery/6.jpg',
             'img/games/TeatherNFeather/gallery/7.png',
         ],
-        sideImages: ['img/games/NoShit/thumbnail.png', 'img/games/res/gmtk21.png'],
+        sideImages: ['img/games/noshit.png', 'img/games/res/cyberiada.png'],
         year: 2026,
         award: '',
         description: 'Celem było stworzenie rytmicznej gry zaprojektowanej na kontroler w formie maty do tańca. Gracz wciela się w szczura, który porusza się w rytm muzyki. Stworzyłam rytmiczną ścieżkę dźwiękową, która bezpośrednio wspiera mechanikę rozgrywki, zapewniając wyraźne tempo i responsywność na polecenia gracza. Muzyka została zaprojektowana tak, aby była zarówno angażująca, jak i funkcjonalna.',
@@ -254,7 +254,7 @@ const games = [
     },
     {
         title: 'NoShit',
-        mainImage: 'img/games/NoShit/thumbnail.png',
+        mainImage: 'img/games/noshit.png',
         video: 'img/games/NoShit/video.mov',
         gallery: [
             'img/games/FlowState/gallery/1.gif',
@@ -267,7 +267,7 @@ const games = [
             'img/games/FlowState/gallery/3.jpg',
             'img/games/FlowState/gallery/4.jpg',
         ],
-        sideImages: ['img/games/podpoziomemmorza/thumbnail.png', 'img/games/res/ggj.png'],
+        sideImages: ['img/games/podpoziomemmorza.png', 'img/games/res/cdv.png'],
         year: 2026,
         award: '',
         description: "Szybka, humorystyczna gra zręcznościowa stworzona w zaledwie 24 godziny w ramach game jamu. Gra opowiada o bezcelowej walce z żywiołem - nagłą awarią hydrauliczną we własnym mieszkaniu. Byłam odpowiedzialna za całościową warstwę audio: muzykę, efekty dźwiękowe, oraz montaż i udźwiękowienie scenek fabularnych.",
