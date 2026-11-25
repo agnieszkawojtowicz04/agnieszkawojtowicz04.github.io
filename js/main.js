@@ -239,6 +239,10 @@ const games = [
         year: 2025,
         award: '',
         description: "Skomponowałam muzykę do gry o tematyce podwodnej, stworzonej podczas Game Jamu. Celem było stworzenie nastrojowej ścieżki dźwiękowej, która buduje poczucie głębi i napięcia, aby odzwierciedlać zarówno ekspolarcje, jak i niebezpieczeństwo. Wszystkie dźwięki zostały zaprojektowane tak, aby łączyć otoczenie, dynamikę bąbelków i stylizowane dźwięki interakcji, aby wzbogacić wrażenia słuchowe gracza i zwiększyć poczucie immersji. ",
+        audio: [
+            { src: 'img/PodPoziomemMorza_Music_Menu.wav', name: 'Menu' },
+            { src: 'img/PodPoziomemMorza_Music_Game.wav', name: 'Rozgrywka' }
+        ],
         downloadLink: 'https://zinnex.itch.io/pod-poziomem-morza'
     },
     {
@@ -250,6 +254,10 @@ const games = [
         year: 2026,
         award: '',
         description: 'Celem było stworzenie rytmicznej gry zaprojektowanej na kontroler w formie maty do tańca. Gracz wciela się w szczura, który porusza się w rytm muzyki. Stworzyłam rytmiczną ścieżkę dźwiękową, która bezpośrednio wspiera mechanikę rozgrywki, zapewniając wyraźne tempo i responsywność na polecenia gracza. Muzyka została zaprojektowana tak, aby była zarówno angażująca, jak i funkcjonalna.',
+        audio: [
+            { src: 'img/QLaRat_Music_Menu.wav', name: 'Menu' },
+            { src: 'img/QLaRat_Music_Game.wav', name: 'Rozgrywka' }
+        ],
         downloadLink: 'https://krecikowicz.itch.io/qlarat'
     },
     {
@@ -261,6 +269,9 @@ const games = [
         year: 2026,
         award: '',
         description: "Szybka, humorystyczna gra zręcznościowa stworzona w zaledwie 24 godziny w ramach game jamu. Gra opowiada o bezcelowej walce z żywiołem - nagłą awarią hydrauliczną we własnym mieszkaniu. Byłam odpowiedzialna za całościową warstwę audio: muzykę, efekty dźwiękowe, oraz montaż i udźwiękowienie scenek fabularnych.",
+        audio: [
+            { src: 'img/NoShit_Music.wav', name: 'Muzyka z gry' }
+        ],
         downloadLink: 'https://3pieczarkis.itch.io/no-shit'
     },
 ];
@@ -342,6 +353,9 @@ function updateGame(index) {
 
         descriptionElement.innerHTML = description;
 
+        // Update audio player
+        renderGamejamAudio(game);
+
         // Update side images
         const sideImages = document.querySelectorAll('.gamejam-side-image');
         sideImages[0].src = game.sideImages[0];
@@ -366,6 +380,58 @@ function updateGame(index) {
         gamejamInfo.classList.remove('fade-out');
         isTransitioning = false;
     }, 300); // This timeout should match the transition duration in CSS
+}
+
+function renderGamejamAudio(game) {
+    const box = document.querySelector('.gamejam-audio');
+    if (!box) return;
+
+    box.querySelectorAll('audio').forEach(a => a.pause());
+    box.innerHTML = '';
+
+    const tracks = (game.audio || []).filter(t => t && t.src);
+    if (!tracks.length) {
+        box.style.display = 'none';
+        return;
+    }
+    box.style.display = 'block';
+
+    const label = document.createElement('div');
+    label.textContent = 'Posłuchaj';
+    label.style.cssText = 'text-transform:uppercase;letter-spacing:1px;font-size:13px;' +
+        'opacity:.6;margin-bottom:8px;';
+    box.appendChild(label);
+
+    const list = document.createElement('div');
+    list.style.cssText = 'display:flex;flex-direction:column;gap:10px;';
+
+    tracks.forEach(t => {
+        const row = document.createElement('div');
+        row.style.cssText = 'border:1px solid rgba(255,255,255,.18);border-radius:6px;' +
+            'padding:10px 14px;background:rgba(255,255,255,.03);';
+
+        const name = document.createElement('div');
+        name.textContent = t.name || t.src.split('/').pop().replace(/\.[^.]+$/, '');
+        name.style.cssText = 'font-size:14px;margin-bottom:8px;';
+
+        const audio = document.createElement('audio');
+        audio.src = t.src;
+        audio.controls = true;
+        audio.preload = 'none';
+        audio.style.width = '100%';
+
+        // jeden utwor naraz + wyciszenie filmu
+        audio.addEventListener('play', () => {
+            box.querySelectorAll('audio').forEach(a => { if (a !== audio) a.pause(); });
+            document.querySelectorAll('#gamejam-main-media video').forEach(v => { v.muted = true; });
+        });
+
+        row.appendChild(name);
+        row.appendChild(audio);
+        list.appendChild(row);
+    });
+
+    box.appendChild(list);
 }
 
 function startSlideshow() {
