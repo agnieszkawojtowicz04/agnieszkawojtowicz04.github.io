@@ -84,10 +84,7 @@ jQuery(document).ready(function($) {
             backDelay: 1500,
             backSpeed: 25,
             showCursor: true,
-            cursorChar: '|',
-            onComplete: function (self) {
-                self.cursor.style.display = 'none';
-            }
+            cursorChar: '|'
         });
     }
 
