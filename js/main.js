@@ -81,6 +81,7 @@ jQuery(document).ready(function($) {
             strings: typed_strings.split(','),
             typeSpeed: 45,
             loop: true,
+            loopCount: Infinity,
             backDelay: 1500,
             backSpeed: 25,
             showCursor: true,
