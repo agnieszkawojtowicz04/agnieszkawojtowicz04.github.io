@@ -601,6 +601,7 @@ $(document).ready(function () {
         var time  = d.time  || '';
         var tools = (d.tools || '').split(',');
         var link  = (d.link  || '').trim();
+        var yt    = (d.yt    || '').trim();
 
         // dane per sciezka: opis + wlasna galeria
         var roles = [
@@ -612,12 +613,21 @@ $(document).ready(function () {
         html += '<div class="row"><div class="modal-details w-100"><div class="page-body project-info">';
 
         if (title) html += '<h3 class="modal-title">' + title + '</h3>';
-        if (link) {
-            html += '<div style="margin-top:12px;">' +
-                '<a href="' + link + '" target="_blank" rel="noopener noreferrer" ' +
-                'class="btn btn-sm btn-outline-light">' +
-                '<i class="fas fa-gamepad"></i> Zagraj / Build na itch.io' +
-                '</a></div>';
+        if (link || yt) {
+            html += '<div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:8px;">';
+            if (link) {
+                html += '<a href="' + link + '" target="_blank" rel="noopener noreferrer" ' +
+                    'class="btn btn-sm btn-outline-light">' +
+                    '<i class="fas fa-gamepad"></i> Zagraj / Build na itch.io' +
+                    '</a>';
+            }
+            if (yt) {
+                html += '<a href="' + yt + '" target="_blank" rel="noopener noreferrer" ' +
+                    'class="btn btn-sm btn-outline-light">' +
+                    '<i class="fab fa-youtube"></i> Obejrzyj trailer na YouTube' +
+                    '</a>';
+            }
+            html += '</div>';
         }
 
         // 3a. ZAKRES PRAC - wybor sciezki
