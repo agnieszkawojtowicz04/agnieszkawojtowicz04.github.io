@@ -597,8 +597,8 @@ $(document).ready(function () {
         var labStyle = 'text-transform:uppercase;letter-spacing:1px;font-size:13px;opacity:.6;margin-bottom:8px;';
 
         var d = (trigger && trigger.dataset) || {};
-        var time  = d.time  || '[PLACEHOLDER] np. 3 tygodnie / 40 h';
-        var tools = (d.tools || 'Reaper, FMOD, Unity').split(',');
+        var time  = d.time  || '';
+        var tools = (d.tools || '').split(',');
 
         // dane per sciezka: opis + wlasna galeria
         var roles = [
