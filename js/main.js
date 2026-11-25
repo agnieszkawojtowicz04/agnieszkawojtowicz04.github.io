@@ -225,6 +225,7 @@ jQuery(document).ready(function($) {
         modal.dataset.type = this.dataset.type;
         modal.dataset.title = this.querySelector('.details h3').textContent;
         modal.dataset.subfolder = this.dataset.subfolder || "";
+        modal.dataset.link = this.dataset.link || "";
     });
 
    
