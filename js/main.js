@@ -79,10 +79,10 @@ jQuery(document).ready(function($) {
         var typed_strings = $('.text-slider-items').text();
         var typed = new Typed('.text-slider', {
             strings: typed_strings.split(','),
-            typeSpeed: 20,
-            loop: false,
-            backDelay: 1100,
-            backSpeed: 10,
+            typeSpeed: 45,
+            loop: true,
+            backDelay: 1500,
+            backSpeed: 25,
             showCursor: true,
             cursorChar: '|',
             onComplete: function (self) {
