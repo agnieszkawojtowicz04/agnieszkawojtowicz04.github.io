@@ -599,7 +599,6 @@ $(document).ready(function () {
         var d = (trigger && trigger.dataset) || {};
         var time  = d.time  || '';
         var tools = (d.tools || '').split(',');
-        var link  = (d.link  || '').trim();
 
         // dane per sciezka: opis + wlasna galeria
         var roles = [
@@ -611,13 +610,6 @@ $(document).ready(function () {
         html += '<div class="row"><div class="modal-details w-100"><div class="page-body project-info">';
 
         if (title) html += '<h3 class="modal-title">' + title + '</h3>';
-
-        if (link) {
-            html += '<div style="margin-top:12px;">' +
-                '<a href="' + link + '" target="_blank" rel="noopener noreferrer" ' +
-                'class="btn btn-sm btn-outline-light">' +
-                '<i class="fas fa-gamepad"></i> Zagraj / Build na itch.io' +
-                '</a></div>';
 
         // 3a. ZAKRES PRAC - wybor sciezki
         if (roles.length) {
