@@ -603,9 +603,9 @@ $(document).ready(function () {
 
         // dane per sciezka: opis + wlasna galeria
         var roles = [
-            { key: 'sound',    label: 'Sound Design',    text: d.descSound    || '', gal: d.gallerySound    || '' },
-            { key: 'composer', label: 'Composer',        text: d.descComposer || '', gal: d.galleryComposer || '' },
-            { key: 'pm',       label: 'Project Manager', text: d.descPm       || '', gal: d.galleryPm       || '' }
+            { key: 'sound',    label: 'Sound Design',    text: d.descSound    || '', gal: d.gallerySound    || '', aud: d.audioSound    || '' },
+            { key: 'composer', label: 'Composer',        text: d.descComposer || '', gal: d.galleryComposer || '', aud: d.audioComposer || '' },
+            { key: 'pm',       label: 'Project Manager', text: d.descPm       || '', gal: d.galleryPm       || '', aud: d.audioPm       || '' }
         ].filter(function (r) { return r.text && r.text.trim() !== ''; });
 
         html += '<div class="row"><div class="modal-details w-100"><div class="page-body project-info">';
@@ -657,6 +657,7 @@ $(document).ready(function () {
 
         // 3d. O PROJEKCIE + 3e. ZDJECIA (zalezne od sciezki)
         html += '<div class="role-desc-output"></div>';
+        html += '<div class="role-audio-output"></div>';
         html += '<div class="role-gallery-output"></div>';
 
         html += '</div></div></div>';
@@ -669,6 +670,21 @@ $(document).ready(function () {
             return list;
         }
 
+        function roleAudio(r) {
+            return (r.aud || '').split(',')
+                .map(function (x) { return x.trim(); })
+                .filter(Boolean)
+                .map(function (item) {
+                    var parts = item.split('|');
+                    var src = parts[0].trim();
+                    var name = (parts[1] || '').trim();
+                    if (!name) {
+                        name = src.split('/').pop().replace(/\.[^.]+$/, '').replace(/[_-]+/g, ' ');
+                    }
+                    return { src: src, name: name };
+                });
+        }
+
         function renderRole(key) {
             var r = roles.filter(function (x) { return x.key === key; })[0];
             if (!r) return;
@@ -679,17 +695,52 @@ $(document).ready(function () {
                 '<p style="line-height:1.7;">' + r.text + '</p></div>'
             );
 
-            var gal = '<div class="project-section" style="' + secStyle + '">' +
-                '<div style="' + labStyle + '">Zdjęcia do projektu</div>' +
-                '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;">';
-            roleGallery(r).forEach(function (src) {
-                gal += '<a class="cert-zoom" href="' + src + '" title="' + title + '">' +
-                    '<img src="' + src + '" alt="' + title + '" ' +
-                    'style="width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:4px;">'
-                    '</a>';
-            });
-            gal += '</div></div>';
-            $body.find('.role-gallery-output').html(gal);
+            // --- AUDIO (tylko jesli sciezka ma pliki) ---
+            var tracks = roleAudio(r);
+            if (tracks.length) {
+                var au = '<div class="project-section" style="' + secStyle + '">' +
+                    '<div style="' + labStyle + '">Posłuchaj</div>' +
+                    '<div style="display:flex;flex-direction:column;gap:10px;">';
+                tracks.forEach(function (t) {
+                    au += '<div style="border:1px solid rgba(255,255,255,.18);border-radius:6px;' +
+                        'padding:10px 14px;background:rgba(255,255,255,.03);">' +
+                        '<div style="font-size:14px;margin-bottom:8px;">' + t.name + '</div>' +
+                        '<audio class="portfolio-audio" controls preload="none" ' +
+                        'style="width:100%;" src="' + t.src + '"></audio>' +
+                        '</div>';
+                });
+                au += '</div></div>';
+                $body.find('.role-audio-output').html(au);
+
+                // 'play' nie babelkuje - podpinamy bezposrednio po renderze
+                $body.find('.portfolio-audio').on('play', function () {
+                    var self = this;
+                    $body.find('.portfolio-audio').each(function () {
+                        if (this !== self) this.pause();
+                    });
+                    $body.find('video').each(function () { this.pause(); });
+                });
+            } else {
+                $body.find('.role-audio-output').empty();
+            }
+
+            // --- GALERIA (tylko jesli sciezka ma zdjecia) ---
+            var shots = roleGallery(r);
+            if (shots.length) {
+                var gal = '<div class="project-section" style="' + secStyle + '">' +
+                    '<div style="' + labStyle + '">Zdjęcia do projektu</div>' +
+                    '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;">';
+                shots.forEach(function (src) {
+                    gal += '<a class="cert-zoom" href="' + src + '" title="' + title + '">' +
+                        '<img src="' + src + '" alt="' + title + '" ' +
+                        'style="width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:4px;">' +
+                        '</a>';
+                });
+                gal += '</div></div>';
+                $body.find('.role-gallery-output').html(gal);
+            } else {
+                $body.find('.role-gallery-output').empty();
+            }
         }
 
         $body.html(html);
@@ -738,7 +789,7 @@ $(document).ready(function () {
     });
 
     $('#portfolioModal').on('hide.bs.modal', function () {
-        $(this).find('video').each(function () {
+        $(this).find('video, audio').each(function () {
             this.pause();
         });
     });
