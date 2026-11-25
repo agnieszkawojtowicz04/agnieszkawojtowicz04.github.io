@@ -666,8 +666,10 @@ $(document).ready(function () {
                 '<div style="' + labStyle + '">Zdjęcia do projektu</div>' +
                 '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;">';
             roleGallery(r).forEach(function (src) {
-                gal += '<img src="' + src + '" alt="' + title + '" ' +
-                    'style="width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:4px;">';
+                gal += '<a class="cert-zoom" href="' + src + '" title="' + title + '">' +
+                    '<img src="' + src + '" alt="' + title + '" ' +
+                    'style="width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:4px;">'
+                    '</a>';
             });
             gal += '</div></div>';
             $body.find('.role-gallery-output').html(gal);
