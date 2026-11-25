@@ -615,7 +615,7 @@ $(document).ready(function () {
             html += '<div style="margin-top:12px;">' +
                 '<a href="' + link + '" target="_blank" rel="noopener noreferrer" ' +
                 'class="btn btn-sm btn-outline-light">' +
-                '<i class="fa fa-gamepad"></i> Zagraj / Build na itch.io' +
+                '<i class="fas fa-gamepad"></i> Zagraj / Build na itch.io' +
                 '</a></div>';
         }
 
